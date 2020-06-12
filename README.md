@@ -1,4 +1,4 @@
-@[TOC](这里写目录标题)
+
 # 前言
 最近接到这样一个需求：
 
@@ -200,4 +200,4 @@ timeTransformation : function(date,num) {
 ```
 # 结尾
 在此感谢[js 当前日期增加自然月](https://www.cnblogs.com/linyijia/p/6118835.html)中的思路。
-我把关于此博客所有代码整合起来放在了[timeTransformation](https://github.com/1058760330/timeTransformation)。
+
