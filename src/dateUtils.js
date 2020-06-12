@@ -49,44 +49,16 @@ var dateUtils = {
 		month = (month + num) % 12;
 		//0-11 转变为 1-12
 		month += 1;
+		
+		//获取特定年月的最大天数值 来自CSDN it-lisa 的思路启发
+		maxDayCount = new Date(year,month,0).getDate();
+		day > maxDayCount ? day = maxDayCount : ''; 
 
-		// 大月31天，小月30天，2月份只有28天（平年）或29天（闰年）
-		// 每年一﹑三﹑五﹑七﹑八﹑十﹑十二这七个月为大月，均三十一天
-		switch(month){
-			case 1 :
-			case 3 :
-			case 5 :
-			case 7 :
-			case 8 :
-			case 10 :
-			case 12 :
-				day > 31 ? day = 31 : '';
-				break;
-			case 4 :
-			case 6 :
-			case 9 :
-			case 11 :
-				day > 30 ? day = 30 : '';
-				break;
-			case 2 :
-				this.isLeapYear(year) ? (day > 29 ? day = 29 : '') : (day > 28 ? day = 28 : ''); 
-				break;
-			default : 
-				break;	
-		}
+		
 		month < 10 ? (month = '0' + month) : '';
 		day < 10 ? (day = '0' + day) : '';
 		return year + '-' + month + '-' + day + ' ' + dateArr[1];
-	},
-
-	/**
-	 * 是否为闰年
-	 * @param {*} year 
-	 */
-	isLeapYear : function(year) {
-		// 普通闰年:公历年份是4的倍数的，且不是100的倍数，为普通闰年。（如2004年就是闰年）
-		// 世纪闰年:公历年份是整百数的，必须是400的倍数才是世纪闰年（如1900年不是世纪闰年，2000年是世纪闰年）
-		return ((year % 4 == 0) && (year % 100 != 0)) ? true : ((year % 400) == 0) ? true : false;
 	}
+
 }
 module.exports.dateUtils = dateUtils
