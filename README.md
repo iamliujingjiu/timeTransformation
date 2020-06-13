@@ -1,4 +1,4 @@
-
+@[TOC](日期增加自然月)
 # 前言
 最近接到这样一个需求：
 
@@ -98,6 +98,40 @@
 		return ((year % 4 == 0) && (year % 100 != 0)) ? true : ((year % 400) == 0) ? true : false;
 	}
 ```
+另外一种思路，来自[CSDN用户 it-lisa](https://me.csdn.net/qq_33015075) 的思路启发：
+
+```javascript
+/**
+	 * 在线生成合约 
+	 * 当用户点击签约按钮时 就是合约的起始时间
+	 * 截止时间为 用户选择的月数（或者是年数）累加起始时间
+	 * 要解决的问题 : 
+	 * 1.如在2020年2月29号签约，签约时间为1年，那么截止时间就只能返回2021年2月28号；
+	 * 2.如在2020年1月31号签约，签约时间为1个月，那么截止时间就只能返回2020年2月29号；
+	 * @param {*} date 要累加的时间
+	 * @param {*} num 累加多少个月 1年就是12个月
+	 */
+	timeTransformation : function(date,num) {
+		var day = date.getDate(),
+		month = date.getMonth(),
+		year = date.getFullYear(),
+		dateArr = this.dateFormmat(date,'yyyy-MM-dd hh:mm:ss').split(' ');
+	
+		year = year + parseInt((month + num) / 12);
+		month = (month + num) % 12;
+		//0-11 转变为 1-12
+		month += 1;
+		
+		//获取特定年月的最大天数值 来自CSDN it-lisa 的思路启发
+		maxDayCount = new Date(year,month,0).getDate();
+		day > maxDayCount ? day = maxDayCount : ''; 
+
+		month < 10 ? (month = '0' + month) : '';
+		day < 10 ? (day = '0' + day) : '';
+		return year + '-' + month + '-' + day + ' ' + dateArr[1];
+	}
+```
+这种写法的性能比上面一种要强的多，感兴趣可以自己测试一下，这里我就不展示我的测试数据了。
 # 测试代码
 ==运行环境==：nodejs;
 ==判定依据==：以当前时间、2020-01-31 00:00:00、2020-02-29 00:00:00为起始时间,合约生效时长涵盖400年,计算出合约终止时间,将终止时间转时间戳后再转string并与转换前进行对比;
@@ -200,4 +234,5 @@ timeTransformation : function(date,num) {
 ```
 # 结尾
 在此感谢[js 当前日期增加自然月](https://www.cnblogs.com/linyijia/p/6118835.html)中的思路。
-
+同时感谢[CSDN用户 it-lisa](https://me.csdn.net/qq_33015075) 的思路启发。
+我把关于此博客所有代码整合起来放在了[timeTransformation](https://github.com/1058760330/timeTransformation)。
